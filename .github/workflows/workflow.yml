@@ -1,0 +1,48 @@
+name: CI for restaurant
+
+on:
+  pull_request:
+    branches: [release, main, development]
+  push:
+    branches: [release, main, development]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - name: ci for backend
+        working-directory: ./backend
+        run: |
+          npm i
+          npm run build
+          npm run test:unit
+          npm run test:cov
+      - name: lint backend
+        working-directory: ./backend
+        run: |
+          npm run format
+      - name: ci for frontend
+        working-directory: ./frontend
+        run: |
+          npm i
+          npm run build
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # - name: ChatGPT comment
+      #   uses: kxxt/chatgpt-action@v0.3
+      #   id: chatgpr
+      #   with:
+      #     number: ${{ github.event.pull_request.number }}
+      #     sessionToken: ${{ secrets.CHATGPT_SESSION_TOKEN }}
+      #     split: "yolo"
+      # env:
+      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
