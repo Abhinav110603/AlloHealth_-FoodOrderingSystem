@@ -11,10 +11,13 @@ Key Features:
 
 ## Getting Started
 
-Clone this repository
-
 cd backend
 npm run start:dev
 
 cd frontend
 npm run start
+
+Author:
+Abhinav110603 : GIT
+Abhivk1817 : Instagram
+https://www.linkedin.com/in/abhinav-ponnala-6a725a247/ : LinkedIn
